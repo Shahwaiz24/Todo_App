@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/Custom%20Widget/Date/date_dialog.dart';
 import 'package:todo_app/Custom%20Widget/Time/am_pm.dart';
 import 'package:todo_app/Custom%20Widget/Time/hours.dart';
 import 'package:todo_app/Custom%20Widget/Time/minutes.dart';
@@ -8,7 +9,7 @@ import 'package:todo_app/Custom%20Widget/textfield_.dart';
 
 int? hourIndex;
 int? minIndex;
-int? am_pmIndex;
+String am_pm = "AM";
 
 class DialogBar extends StatefulWidget {
   const DialogBar({super.key});
@@ -62,12 +63,14 @@ class _DialogState extends State<DialogBar> {
                         borderRadius: BorderRadius.circular(width * 0.015),
                       ),
                       child: ListWheelScrollView.useDelegate(
+                        // ignore: avoid_types_as_parameter_names
+                        onSelectedItemChanged: (int) {
+                          hourIndex = int;
+                        },
                         itemExtent: 50,
                         childDelegate: ListWheelChildBuilderDelegate(
                             childCount: 13,
                             builder: (context, index) {
-                              hourIndex = index;
-
                               return MyHours(hours: index);
                             }),
                         perspective: 0.005,
@@ -81,11 +84,13 @@ class _DialogState extends State<DialogBar> {
                         color: Colors.grey[900],
                         borderRadius: BorderRadius.circular(width * 0.015)),
                     child: ListWheelScrollView.useDelegate(
+                      onSelectedItemChanged: (int) {
+                        minIndex = int;
+                      },
                       itemExtent: 50,
                       childDelegate: ListWheelChildBuilderDelegate(
                           childCount: 60,
                           builder: (context, index) {
-                            minIndex = index;
                             return MyMinutes(mins: index);
                           }),
                       perspective: 0.005,
@@ -100,15 +105,20 @@ class _DialogState extends State<DialogBar> {
                         color: Colors.grey[900],
                         borderRadius: BorderRadius.circular(width * 0.015)),
                     child: ListWheelScrollView.useDelegate(
+                      onSelectedItemChanged: (int) {
+                        if (int == 0) {
+                          am_pm = 'AM';
+                        } else {
+                          am_pm = 'PM';
+                        }
+                      },
                       itemExtent: 50,
                       childDelegate: ListWheelChildBuilderDelegate(
                           childCount: 2,
                           builder: (context, index) {
                             if (index == 0) {
-                              am_pmIndex = index;
                               return AmPm(isItAm: true);
                             } else {
-                              am_pmIndex = index;
                               return AmPm(isItAm: false);
                             }
                           }),
@@ -124,8 +134,14 @@ class _DialogState extends State<DialogBar> {
             button(
                 height: 0.055,
                 ontap: () {
+                  print("Hour: $hourIndex Min: $minIndex Time:$am_pm");
+
                   Navigator.pop(context);
-                  
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return DateDialog();
+                      });
                 },
                 width: 0.320,
                 screenheight: height,
