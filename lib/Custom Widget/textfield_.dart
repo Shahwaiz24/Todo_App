@@ -6,6 +6,7 @@ Widget text_Field({TextEditingController? controller, required double width}) {
       borderRadius: BorderRadius.circular(5.0),
     ),
     child: TextField(
+      style: TextStyle(color: Colors.white, fontFamily: 'Poppins_Regular'),
       controller: controller,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
