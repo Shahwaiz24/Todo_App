@@ -143,8 +143,15 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColor.buttonColor,
         onPressed: () {
+          hourIndex = 0;
+          selectedDate = DateTime.now();
+          minIndex = 0;
+          _controllerforAddTask.clear();
+          _controllerforAddDescription.clear();
+
           iserror = false;
           showDialog(
+              barrierDismissible: false,
               context: context,
               builder: ((context) {
                 return Dialog(
@@ -224,12 +231,21 @@ class _HomePageState extends State<HomePage> {
                               const Spacer(),
                               IconButton(
                                 onPressed: () {
-                                  Navigator.pop(context);
-                                  showDialog(
-                                      context: context,
-                                      builder: ((context) {
-                                        return DialogBar();
-                                      }));
+                                  if ((_controllerforAddDescription.text !=
+                                              null &&
+                                          _controllerforAddDescription
+                                              .text.isNotEmpty) &&
+                                      (_controllerforAddTask.text != null &&
+                                          _controllerforAddTask
+                                              .text.isNotEmpty)) {
+                                    Navigator.pop(context);
+                                    showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: ((context) {
+                                          return DialogBar();
+                                        }));
+                                  }
                                 },
                                 icon: FaIcon(
                                   FontAwesomeIcons.paperPlane,
