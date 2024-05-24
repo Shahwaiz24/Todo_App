@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/Custom%20Widget/Date/date_dialog.dart';
 import 'package:todo_app/Custom%20Widget/Time/am_pm.dart';
 import 'package:todo_app/Custom%20Widget/Time/hours.dart';
 import 'package:todo_app/Custom%20Widget/Time/minutes.dart';
@@ -7,7 +6,9 @@ import 'package:todo_app/Custom%20Widget/Time/minutes.dart';
 import 'package:todo_app/Custom%20Widget/custom_button.dart';
 import 'package:todo_app/Custom%20Widget/textfield_.dart';
 
+DateTime selectedDate = DateTime.now();
 int? hourIndex;
+String? userdate;
 int? minIndex;
 String am_pm = "AM";
 
@@ -134,14 +135,32 @@ class _DialogState extends State<DialogBar> {
             button(
                 height: 0.055,
                 ontap: () {
-                  print("Hour: $hourIndex Min: $minIndex Time:$am_pm");
+                  if (hourIndex != 0 && minIndex != 0) {
+                    print("Hour: $hourIndex Min: $minIndex Time:$am_pm");
 
-                  Navigator.pop(context);
-                  showDialog(
+                    Navigator.pop(context);
+
+                    showDatePicker(
+                      barrierDismissible: false,
                       context: context,
-                      builder: (context) {
-                        return DateDialog();
-                      });
+                      currentDate: DateTime.now(),
+                      initialDate: DateTime.now(),
+                      builder: (context, child) {
+                        return Theme(data: ThemeData.dark(), child: child!);
+                      },
+                      cancelText: '',
+                      confirmText: 'Save',
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(Duration(days: 365 * 100)),
+                    ).then((value) {
+                      if (value != null) {
+                        selectedDate = value;
+                      }
+                    });
+                    userdate =
+                        '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}';
+                    print(userdate);
+                  }
                 },
                 width: 0.320,
                 screenheight: height,
